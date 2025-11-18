@@ -1,0 +1,118 @@
+% !TEX program = pdflatex
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{physics}
+\usepackage{bm}
+\usepackage{microtype}
+\usepackage{siunitx}
+\sisetup{detect-all}
+\title{Fourier Transform of a Sine--Gaussian: Detailed Derivation via Completing the Square}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\section*{Convention}
+We use the frequency (Hz) Fourier transform
+\begin{equation}
+\mathcal{F}\{f\}(\nu) \equiv \int_{-\infty}^{\infty} f(t)\, e^{-i 2\pi \nu t} \, dt,\qquad \nu\in\mathbb{R}.
+\end{equation}
+Let
+\begin{equation}
+ f(t) = e^{-\tfrac{t^2}{2\sigma^2}}\,\sin(2\pi f_0 t + \phi),\qquad \sigma>0,\ f_0\in\mathbb{R},\ \phi\in\mathbb{R}.
+\end{equation}
+
+We will first compute the transform of a Gaussian and of a modulated Gaussian, then form the sine--Gaussian by linearity.
+
+\section*{Basic result}
+Consider
+\begin{equation}
+I(\nu) := \int_{-\infty}^{\infty} \exp\!\left(-\frac{t^2}{2\sigma^2}\right) e^{-i 2\pi \nu t} \, dt.
+\end{equation}
+Write the exponent as a quadratic form and complete the square. Factor $-\tfrac{1}{2\sigma^2}$:
+\begin{align}
+-\frac{t^2}{2\sigma^2} - i 2\pi \nu t
+&= -\frac{1}{2\sigma^2}\Big(t^2 + i 4\pi \sigma^2 \nu\, t\Big) \\
+&= -\frac{1}{2\sigma^2}\left[\big(t + i 2\pi \sigma^2 \nu\big)^2 - \big(i 2\pi \sigma^2 \nu\big)^2\right] \\
+&= -\frac{\big(t + i 2\pi \sigma^2 \nu\big)^2}{2\sigma^2} - \underbrace{\frac{-\big(i 2\pi \sigma^2 \nu\big)^2}{2\sigma^2}}_{\displaystyle =\; - 2\pi^2 \sigma^2 \nu^2}.
+\end{align}
+Hence
+\begin{equation}
+\exp\!\left(-\frac{t^2}{2\sigma^2} - i 2\pi \nu t\right)
+= e^{-2\pi^2 \sigma^2 \nu^2}\, \exp\!\left(-\frac{\big(t + i 2\pi \sigma^2 \nu\big)^2}{2\sigma^2}\right).
+\end{equation}
+
+Now we change variables, obtaining:
+
+\begin{align}
+I(\nu)
+&= e^{-2\pi^2 \sigma^2 \nu^2} \int_{-\infty}^{\infty} \exp\!\left(-\frac{\big(t + i 2\pi \sigma^2 \nu\big)^2}{2\sigma^2}\right) dt \\
+&= e^{-2\pi^2 \sigma^2 \nu^2} \int_{-\infty}^{\infty} \exp\!\left(-\frac{u^2}{2\sigma^2}\right) du \qquad (u = t + i 2\pi \sigma^2 \nu) \\
+&= \sigma\sqrt{2\pi}\, e^{-2\pi^2 \sigma^2 \nu^2}.
+\end{align}
+Thus
+\begin{equation}
+\boxed{\displaystyle \int_{-\infty}^{\infty} e^{-\tfrac{t^2}{2\sigma^2}} e^{-i 2\pi \nu t} dt
+= \sigma\sqrt{2\pi}\, e^{-2\pi^2 \sigma^2 \nu^2}.}
+\end{equation}
+
+\section*{Frequency shift}
+For $f(t)=e^{-\tfrac{t^2}{2\sigma^2}} e^{\pm i 2\pi f_0 t}$, the modulation property gives
+\begin{equation}
+\mathcal{F}\{e^{-\tfrac{t^2}{2\sigma^2}} e^{\pm i 2\pi f_0 t}\}(\nu)
+= I(\nu \mp f_0)
+= \sigma\sqrt{2\pi}\, e^{-2\pi^2 \sigma^2 (\nu \mp f_0)^2}.
+\end{equation}
+
+\section*{Final result}
+
+Using $\sin(2\pi f_0 t + \phi) = \tfrac{1}{2i}\big(e^{i(2\pi f_0 t + \phi)} - e^{-i(2\pi f_0 t + \phi)}\big)$ and linearity,
+\begin{align}
+\mathcal{F}\{f\}(\nu)
+&= \int e^{-\tfrac{t^2}{2\sigma^2}} \sin(2\pi f_0 t + \phi)\, e^{-i 2\pi \nu t} dt \\
+&= \frac{1}{2i}\Big[ e^{i\phi} \underbrace{\mathcal{F}\{e^{-\tfrac{t^2}{2\sigma^2}} e^{i 2\pi f_0 t}\}(\nu)}_{\sigma\sqrt{2\pi}\, e^{-2\pi^2 \sigma^2 (\nu - f_0)^2}} - e^{-i\phi} \underbrace{\mathcal{F}\{e^{-\tfrac{t^2}{2\sigma^2}} e^{-i 2\pi f_0 t}\}(\nu)}_{\sigma\sqrt{2\pi}\, e^{-2\pi^2 \sigma^2 (\nu + f_0)^2}} \Big].
+\end{align}
+Therefore
+\begin{equation}
+\boxed{\displaystyle
+\mathcal{F}\{ e^{-\tfrac{t^2}{2\sigma^2}}\,\sin(2\pi f_0 t + \phi) \}(\nu)
+= \frac{\sigma\sqrt{2\pi}}{2i}\Big( e^{i\phi} e^{-2\pi^2 \sigma^2 (\nu - f_0)^2}
+ - e^{-i\phi} e^{-2\pi^2 \sigma^2 (\nu + f_0)^2} \Big).
+}
+\end{equation}
+
+\paragraph{Cosine Gaussian.} For $g(t)= e^{-\tfrac{t^2}{2\sigma^2}}\cos(2\pi f_0 t + \phi)$, one similarly finds
+\begin{equation}
+\mathcal{F}\{g\}(\nu) = \frac{\sigma\sqrt{2\pi}}{2}\Big( e^{i\phi} e^{-2\pi^2 \sigma^2 (\nu - f_0)^2}
+ + e^{-i\phi} e^{-2\pi^2 \sigma^2 (\nu + f_0)^2} \Big).
+\end{equation}
+
+\section*{Shape parameters}
+The spectral standard deviation is $\sigma_\nu = \tfrac{1}{2\pi\sigma}$. Each lobe is a Gaussian centered at $\nu=\pm f_0$ with width $\sigma_\nu$.
+
+\section*{Converting to angular-frequency}
+
+Let $\omega=2\pi\nu$ and define
+\begin{equation}
+\mathcal{F}_\omega\{f\}(\omega) \equiv \int_{-\infty}^{\infty} f(t)\, e^{-i\omega t}\, dt.
+\end{equation}
+Then
+\begin{equation}
+\mathcal{F}_\omega\left\{ e^{-\tfrac{t^2}{2\sigma^2}} e^{i\omega_0 t} \right\}(\omega)
+= \sqrt{2\pi}\,\sigma\, e^{-\tfrac{\sigma^2}{2}(\omega-\omega_0)^2},
+\end{equation}
+so for the sine--Gaussian
+\begin{equation}
+\mathcal{F}_\omega\{ e^{-\tfrac{t^2}{2\sigma^2}}\sin(\omega_0 t + \phi) \}(\omega)
+= \frac{\sqrt{2\pi}\,\sigma}{2i}\Big( e^{i\phi} e^{-\tfrac{\sigma^2}{2}(\omega-\omega_0)^2} - e^{-i\phi} e^{-\tfrac{\sigma^2}{2}(\omega+\omega_0)^2} \Big).
+\end{equation}
+
+\section*{Checks}
+\begin{itemize}
+  \item Symmetry: for $\phi=0$, $\mathcal{F}\{\,\cdot\,\}$ is purely imaginary and odd, as expected from an odd time-domain signal times an even window.
+  \item Limit $f_0\to 0$: the sine--Gaussian tends to $\sin(\phi)$ times a base Gaussian; the transform reduces consistently.
+  \item Energy: $\int |f(t)|^2 dt = \sigma\sqrt{\pi}\,\big(1 - e^{-4\pi^2 f_0^2\sigma^2}\cos 2\phi\big)$; the spectrum integrates to the same value (Parseval).
+\end{itemize}
+
+\end{document}

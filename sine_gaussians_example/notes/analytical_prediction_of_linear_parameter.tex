@@ -1,0 +1,226 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+
+\title{Analytic Posteriors for a Sine--Gaussian in White Noise}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Model}
+Let $y \in \mathbb{R}^n$ be uniformly sampled data with sampling times $t_1,\dots,t_n$, corrupted by i.i.d.\ Gaussian noise $\varepsilon \sim \mathcal{N}(0,\sigma_n^2 I)$.
+The signal is a sine--Gaussian template with unit-amplitude shape
+\[
+\phi_i(t_0) \;=\; \sin\!\big(2\pi f_0 (t_i - t_0)\big)\,
+\exp\!\left(-\tfrac12 \Big(\tfrac{t_i - t_0}{\sigma_{\text{env}}}\Big)^2\right),
+\quad i=1,\dots,n,
+\]
+so that
+\[
+y \;=\; \mu\,\phi(t_0) + \varepsilon,
+\qquad \varepsilon \sim \mathcal{N}(0,\sigma_n^2 I).
+\]
+We denote $\|\phi\|^2 := \phi^\top \phi$ and the inner product $\phi^\top y$.
+
+\section{Analytic posterior for amplitude $\mu$ (flat prior)}
+Assume $t_0$ is known and adopt a flat (improper) prior $p(\mu)\propto 1$. The likelihood is
+\[
+p(y\mid \mu) \;\propto\; \exp\!\left(-\frac{1}{2\sigma_n^2}\,\|y - \mu \phi\|^2\right).
+\]
+Expanding the quadratic and completing the square yields the Gaussian posterior
+\[
+\boxed{\;\;
+\mu \mid y \;\sim\; \mathcal{N}\!\Big(\ \hat{\mu},\ \sigma_\mu^2\ \Big),
+\qquad
+\hat{\mu} \;=\; \frac{\phi^\top y}{\phi^\top \phi},
+\quad
+\sigma_\mu^2 \;=\; \frac{\sigma_n^2}{\phi^\top \phi}.
+\;\;}
+\]
+Equivalently, the log-posterior (up to an additive constant) is
+\[
+\log p(\mu\mid y) \;=\; -\tfrac12 \frac{\phi^\top \phi}{\sigma_n^2}\,(\mu - \hat{\mu})^2.
+\]
+
+\paragraph{Remarks.}
+(i) $\hat{\mu}$ is the least-squares / matched-filter estimator. (ii) With a Gaussian prior $\mu\sim \mathcal{N}(0,\sigma_0^2)$, one obtains
+$\mathrm{Var}(\mu\mid y) = \big(\tfrac{\phi^\top\phi}{\sigma_n^2} + \tfrac{1}{\sigma_0^2}\big)^{-1}$ and mean
+$\mathbb{E}[\mu\mid y] = \mathrm{Var}(\mu\mid y)\, \tfrac{\phi^\top y}{\sigma_n^2}$; letting $\sigma_0^2\to\infty$ recovers the flat-prior result above.
+
+\section*{(Optional) Marginal posterior for $t_0$ with flat prior on $\mu$}
+If $\mu$ is unknown with flat prior $p(\mu)\propto 1$ and $t_0$ has a proper uniform prior on $[t_{\min},t_{\max}]$, one can integrate out $\mu$:
+\[
+p(y\mid t_0) \;\propto\; \frac{1}{\|\phi(t_0)\|}\,
+\exp\!\left(\frac{(\phi(t_0)^\top y)^2}{2\sigma_n^2\,\|\phi(t_0)\|^2}\right),
+\]
+so the marginal posterior is
+\[
+\boxed{\quad
+p(t_0\mid y) \;\propto\; \frac{1}{\|\phi(t_0)\|}\,
+\exp\!\left(\frac{(\phi(t_0)^\top y)^2}{2\sigma_n^2\,\|\phi(t_0)\|^2}\right)
+\ \ \text{for}\ \ t_{\min}\le t_0 \le t_{\max},\ \ 0\ \text{otherwise}.
+\quad}
+\]
+This depends on the matched-filter SNR $\rho(t_0):=\dfrac{\phi(t_0)^\top y}{\sigma_n \|\phi(t_0)\|}$ via $\exp(\rho(t_0)^2/2)$, with a $1/\|\phi(t_0)\|$ factor from integrating over $\mu$.
+
+\section{Analytic posterior for amplitude $\mu$ with flat prior (detailed)}
+
+We observe a time series
+\[
+y = (y_1,\dots,y_n)^\top, \qquad
+t = (t_1,\dots,t_n)^\top,
+\]
+with independent Gaussian noise
+\[
+y_i = \mu\,\phi_i + \varepsilon_i,
+\qquad \varepsilon_i \sim \mathcal{N}(0,\sigma_n^2).
+\]
+
+Here the template (unit amplitude sine--Gaussian) is
+\[
+\phi_i \equiv \phi(t_i;t_0)
+= \sin\!\big(2\pi f_0 (t_i - t_0)\big)\;
+\exp\!\Big[-\tfrac12\big(\tfrac{t_i - t_0}{\sigma_{\rm env}}\big)^2\Big].
+\]
+
+Vector form:
+\[
+y = \mu\,\phi + \varepsilon,
+\qquad \varepsilon \sim \mathcal{N}(0,\sigma_n^2 I_n).
+\]
+
+\subsection*{Likelihood}
+
+Because the noise samples are independent Gaussians:
+\[
+p(y\mid \mu)
+= \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma_n}
+\exp\!\left[-\frac{(y_i - \mu\phi_i)^2}{2\sigma_n^2}\right].
+\]
+
+Thus
+\[
+\log p(y\mid \mu)
+= -\frac{1}{2\sigma_n^2}\sum_{i=1}^n (y_i - \mu\phi_i)^2
+- \frac{n}{2}\log(2\pi\sigma_n^2).
+\]
+
+We drop the additive constant independent of $\mu$:
+\[
+\log p(y\mid \mu) \doteq
+-\frac{1}{2\sigma_n^2}\sum_{i=1}^n (y_i - \mu\phi_i)^2.
+\]
+
+Expand the square term‐by‐term:
+\[
+\sum_{i=1}^n (y_i - \mu\phi_i)^2
+= \sum_{i=1}^n y_i^2
+- 2\mu \sum_{i=1}^n y_i\phi_i
++ \mu^2 \sum_{i=1}^n \phi_i^2.
+\]
+
+Define the sufficient statistics
+\[
+\phi^\top y = \sum_{i=1}^n y_i\phi_i,
+\qquad
+\|\phi\|^2 = \phi^\top \phi = \sum_{i=1}^n \phi_i^2.
+\]
+
+Then
+\[
+\log p(y\mid \mu) \doteq
+-\frac{1}{2\sigma_n^2}
+\left(
+\mu^2\|\phi\|^2
+- 2\mu\,(\phi^\top y)
+\right)
++ \text{const}.
+\]
+
+\subsection*{Complete the square}
+
+We want to rewrite
+\[
+\mu^2\|\phi\|^2 - 2\mu(\phi^\top y).
+\]
+
+Factor $\|\phi\|^2$:
+\[
+\|\phi\|^2
+\left(
+\mu^2 - 2\mu \frac{\phi^\top y}{\|\phi\|^2}
+\right).
+\]
+
+Write as a square minus a correction:
+\[
+\mu^2 - 2\mu\frac{\phi^\top y}{\|\phi\|^2}
+= \left(\mu - \frac{\phi^\top y}{\|\phi\|^2}\right)^2
+- \left(\frac{\phi^\top y}{\|\phi\|^2}\right)^2.
+\]
+
+Thus
+\[
+\mu^2\|\phi\|^2 - 2\mu(\phi^\top y)
+= \|\phi\|^2
+\left(\mu - \frac{\phi^\top y}{\|\phi\|^2}\right)^2
+- \frac{(\phi^\top y)^2}{\|\phi\|^2}.
+\]
+
+Plug back into the log likelihood:
+\[
+\log p(y\mid \mu)
+\doteq
+-\frac{1}{2\sigma_n^2}
+\left[
+\|\phi\|^2
+\left(\mu - \frac{\phi^\top y}{\|\phi\|^2}\right)^2
+- \frac{(\phi^\top y)^2}{\|\phi\|^2}
+\right].
+\]
+
+Drop the constant independent of $\mu$:
+\[
+\log p(y\mid \mu)
+\doteq
+-\frac{\|\phi\|^2}{2\sigma_n^2}
+\left(\mu - \frac{\phi^\top y}{\|\phi\|^2}\right)^2.
+\]
+
+\subsection*{Flat prior and posterior}
+
+With flat prior $p(\mu)\propto 1$,
+\[
+p(\mu\mid y) \propto p(y\mid \mu).
+\]
+
+Thus
+\[
+\log p(\mu\mid y)
+= -\frac{\|\phi\|^2}{2\sigma_n^2}
+\left(\mu - \frac{\phi^\top y}{\|\phi\|^2}\right)^2
++ \text{const}.
+\]
+
+Recognizing the kernel of a Gaussian:
+\[
+\boxed{
+\mu \mid y \sim
+\mathcal{N}\!\left(
+\hat{\mu},\, \sigma_\mu^2
+\right),
+\qquad
+\hat{\mu} =
+\frac{\phi^\top y}{\|\phi\|^2},
+\quad
+\sigma_\mu^2 = \frac{\sigma_n^2}{\|\phi\|^2}.
+}
+\]
+
+This recovers the well‐known matched‐filter estimator for amplitude with its variance.
+
+
+
+\end{document}
