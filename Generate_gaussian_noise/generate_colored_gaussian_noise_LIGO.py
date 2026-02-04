@@ -57,14 +57,16 @@ def colored_noise_from_psd(psd_onesided, fs, n, rng=None):
     X  = np.zeros(nfreq, dtype=np.complex128)
 
     # DC
-    X[0] = rng.normal(0.0, n * np.sqrt(psd_onesided[0] * df))
+    sigma_0 = n * np.sqrt(psd_onesided[0] * df)
+    X[0]    = rng.normal(0.0, sigma_0)
 
     # Nyquist (only if n even)
     if n % 2 == 0:
-        X[-1] = rng.normal(0.0, n * np.sqrt(psd_onesided[-1] * df))
-        kmax  = nfreq - 1
+        sigma_nyq = n * np.sqrt(psd_onesided[-1] * df)
+        X[-1]     = rng.normal(0.0, sigma_nyq)
+        kmax      = nfreq - 1
     else:
-        kmax  = nfreq
+        kmax      = nfreq
 
     # Positive freqs excluding DC(/Nyquist)
     k     = np.arange(1, kmax)
